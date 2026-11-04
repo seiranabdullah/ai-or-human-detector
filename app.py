@@ -15,7 +15,10 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from src.text_features import FEATURE_NAMES, text_features
+try:
+    from text_features import FEATURE_NAMES, text_features
+except ImportError:
+    from src.text_features import FEATURE_NAMES, text_features
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(ROOT, "model", "ai_detector.joblib")

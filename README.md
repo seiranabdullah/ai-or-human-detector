@@ -61,7 +61,7 @@ streamlit run app.py
 
 ```
 app.py                          Streamlit web app
-src/text_features.py            writing-style features (shared by the notebook and the app)
+text_features.py                writing-style features (shared by the notebook and the app)
 notebooks/AI_or_Human_Analysis.ipynb   full analysis: cleaning, EDA, models, evaluation
 notebooks/nb_source.py          source of the notebook
 data/essays.csv.gz              dataset (29,145 essays, compressed)
