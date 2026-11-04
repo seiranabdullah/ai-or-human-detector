@@ -3,3 +3,4 @@ scikit-learn>=1.5
 pandas
 numpy
 joblib
+openpyxl

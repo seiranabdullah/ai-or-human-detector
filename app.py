@@ -4,6 +4,7 @@ Mini project for Programming for Data Science, by Seyran Gurbanov.
 Run locally with:  streamlit run app.py
 """
 import html
+import io
 import json
 import os
 import re
@@ -348,7 +349,21 @@ def page_history():
         st.success("Deleted.")
         st.rerun()
 
-    st.download_button("⬇️ Download history (CSV)", hist.to_csv(index=False).encode(), "history.csv", "text/csv")
+    export = hist.copy()
+    export["text"] = export["text"].str.replace(r"\s*\n\s*", " ", regex=True)
+    export["ai_probability"] = (export["ai_probability"] * 100).round(1)
+    export = export.rename(columns={"ai_probability": "ai_probability_%"})
+    c1, c2 = st.columns(2)
+    excel = io.BytesIO()
+    with pd.ExcelWriter(excel, engine="openpyxl") as writer:
+        export.to_excel(writer, index=False, sheet_name="history")
+        sheet = writer.sheets["history"]
+        for col, width in zip("ABCDEFGHI", [6, 18, 22, 80, 12, 16, 26, 18, 30]):
+            sheet.column_dimensions[col].width = width
+    c1.download_button("⬇️ Download history (Excel)", excel.getvalue(), "history.xlsx",
+                       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    c2.download_button("⬇️ Download history (CSV)", export.to_csv(index=False, sep=";").encode("utf-8-sig"),
+                       "history.csv", "text/csv")
 
 
 def page_about(stats):
