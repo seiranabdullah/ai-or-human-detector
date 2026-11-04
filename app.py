@@ -9,6 +9,7 @@ import os
 import re
 import sqlite3
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import joblib
 import numpy as np
@@ -28,6 +29,9 @@ DB_PATH = os.path.join(ROOT, "data", "history.db")
 FIG_DIR = os.path.join(ROOT, "reports", "figures")
 
 HUMAN_COLOR, AI_COLOR = "#2E86AB", "#E4572E"
+LOCAL_TZ = ZoneInfo("Europe/Riga")
+ENGLISH_WORDS = {"the", "and", "to", "of", "a", "in", "is", "that", "it", "for", "are", "on", "with", "as", "this",
+                 "be", "they", "have", "not", "can", "their", "but", "or", "people", "would", "more", "students"}
 
 st.set_page_config(page_title="AI or Human? Essay Detector", page_icon="🔍", layout="wide")
 
@@ -143,7 +147,7 @@ def create_check(title, text, words, probability, verdict_text):
     with db() as con:
         con.execute(
             "INSERT INTO checks (created_at, title, text, word_count, ai_probability, verdict) VALUES (?,?,?,?,?,?)",
-            (datetime.now().strftime("%Y-%m-%d %H:%M"), title, text, words, probability, verdict_text),
+            (datetime.now(LOCAL_TZ).strftime("%Y-%m-%d %H:%M"), title, text, words, probability, verdict_text),
         )
 
 
@@ -182,11 +186,19 @@ def page_check(model, stats):
     words = len(re.findall(r"[A-Za-z']+", text))
     st.caption(f"{words} words")
 
-    if st.button("Analyze text", type="primary", disabled=words == 0):
+    if st.button("Analyze text", type="primary"):
+        if words == 0:
+            st.warning("Please paste a text first.")
         st.session_state.analyzed = text
     if not text or st.session_state.get("analyzed") != text:
         st.info("Best for **English student essays of 150+ words**. The result is a probability, not proof.")
         return
+
+    tokens = [w.lower() for w in re.findall(r"[A-Za-z']+", text)]
+    english_share = sum(w in ENGLISH_WORDS for w in tokens) / max(len(re.findall(r"\S+", text)), 1)
+    if english_share < 0.12:
+        st.error("This text does not look like English. The model was trained only on English essays, "
+                 "so the result below is **not reliable** for this text.")
 
     probability, contrib, word_weights = analyse(model, text)
     label, color, icon = verdict(probability)
@@ -240,7 +252,7 @@ def page_check(model, stats):
 
     with st.form("save_form", clear_on_submit=True):
         st.markdown("**Save this check to the history**")
-        title = st.text_input("Title", value=f"Check {datetime.now().strftime('%d.%m %H:%M')}")
+        title = st.text_input("Title", value=f"Check {datetime.now(LOCAL_TZ).strftime('%d.%m %H:%M')}")
         if st.form_submit_button("💾 Save to history"):
             create_check(title, text, words, probability, label)
             st.success("Saved. Open the History page to see, review or delete it.")
@@ -261,7 +273,7 @@ def page_dashboard(stats):
         st.markdown(f"**Source:** {d['name']}. Original rows: {d['rows_original']:,}. "
                     f"Removed {d['duplicates_removed']:,} duplicates and {d['short_removed']} texts under 50 words.")
         c1, c2 = st.columns(2)
-        c1.image(os.path.join(FIG_DIR, "01_class_balance.png"), caption="Class balance")
+        c1.image(os.path.join(FIG_DIR, "01_class_balance.png"), caption="Class balance", width=430)
         c2.image(os.path.join(FIG_DIR, "02_length_histogram.png"), caption="Essay length")
         st.image(os.path.join(FIG_DIR, "03_style_boxplots.png"), caption="Writing-style features")
         c3, c4 = st.columns(2)
