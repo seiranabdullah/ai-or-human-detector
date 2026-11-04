@@ -1,0 +1,332 @@
+{
+  "dataset": {
+    "name": "LLM - Detect AI Generated Text Dataset (Kaggle)",
+    "rows_original": 29145,
+    "rows_clean": 27296,
+    "human": 16116,
+    "ai": 11180,
+    "duplicates_removed": 1843,
+    "short_removed": 6
+  },
+  "style_means": {
+    "word_count": {
+      "AI": 307.995,
+      "Human": 418.19
+    },
+    "avg_word_length": {
+      "AI": 5.114,
+      "Human": 4.439
+    },
+    "sentence_count": {
+      "AI": 14.275,
+      "Human": 21.492
+    },
+    "avg_sentence_length": {
+      "AI": 22.531,
+      "Human": 21.896
+    },
+    "sentence_length_std": {
+      "AI": 8.283,
+      "Human": 10.213
+    },
+    "type_token_ratio": {
+      "AI": 0.554,
+      "Human": 0.444
+    },
+    "punctuation_per_100_words": {
+      "AI": 6.029,
+      "Human": 5.002
+    },
+    "paragraph_count": {
+      "AI": 3.943,
+      "Human": 5.105
+    }
+  },
+  "word_count_hist": {
+    "Human": [
+      4,
+      8,
+      11,
+      17,
+      507,
+      683,
+      786,
+      825,
+      849,
+      926,
+      877,
+      961,
+      960,
+      965,
+      895,
+      885,
+      797,
+      721,
+      661,
+      579,
+      524,
+      388,
+      364,
+      264,
+      256,
+      239,
+      171,
+      165,
+      123,
+      114,
+      84,
+      77,
+      70,
+      58,
+      40,
+      39,
+      31,
+      18,
+      22,
+      25,
+      21,
+      14,
+      16,
+      24,
+      8,
+      13,
+      12,
+      6,
+      0
+    ],
+    "AI": [
+      69,
+      130,
+      374,
+      517,
+      554,
+      657,
+      688,
+      649,
+      620,
+      663,
+      860,
+      2071,
+      1103,
+      362,
+      321,
+      294,
+      238,
+      205,
+      151,
+      124,
+      115,
+      97,
+      77,
+      78,
+      69,
+      42,
+      28,
+      18,
+      4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "word_count_bins": [
+    50,
+    75,
+    100,
+    125,
+    150,
+    175,
+    200,
+    225,
+    250,
+    275,
+    300,
+    325,
+    350,
+    375,
+    400,
+    425,
+    450,
+    475,
+    500,
+    525,
+    550,
+    575,
+    600,
+    625,
+    650,
+    675,
+    700,
+    725,
+    750,
+    775,
+    800,
+    825,
+    850,
+    875,
+    900,
+    925,
+    950,
+    975,
+    1000,
+    1025,
+    1050,
+    1075,
+    1100,
+    1125,
+    1150,
+    1175,
+    1200,
+    1225,
+    1250
+  ],
+  "model_comparison": [
+    {
+      "model": "Random Forest (style features)",
+      "accuracy": 0.9333,
+      "precision": 0.9309,
+      "recall": 0.9043,
+      "f1": 0.9174,
+      "train_time_s": 3.1515
+    },
+    {
+      "model": "Naive Bayes (word counts)",
+      "accuracy": 0.9815,
+      "precision": 0.9949,
+      "recall": 0.9597,
+      "f1": 0.977,
+      "train_time_s": 20.7165
+    },
+    {
+      "model": "Logistic Regression (TF-IDF)",
+      "accuracy": 0.9929,
+      "precision": 0.9973,
+      "recall": 0.9852,
+      "f1": 0.9912,
+      "train_time_s": 22.0729
+    },
+    {
+      "model": "Linear SVM (TF-IDF)",
+      "accuracy": 0.9963,
+      "precision": 0.9995,
+      "recall": 0.9915,
+      "f1": 0.9955,
+      "train_time_s": 22.2127
+    }
+  ],
+  "best_model": "Logistic Regression (TF-IDF)",
+  "test_metrics": {
+    "accuracy": 0.9928571428571429,
+    "precision": 0.9972838388411046,
+    "recall": 0.9852415026833632,
+    "f1": 0.9912260967379077,
+    "roc_auc": 0.999839503145017,
+    "confusion_matrix": [
+      [
+        3218,
+        6
+      ],
+      [
+        33,
+        2203
+      ]
+    ]
+  },
+  "cross_validation_f1": [
+    0.9959677419354839,
+    0.9939284911176074,
+    0.9939421135292797,
+    0.9919064748201439,
+    0.991899189918992
+  ],
+  "robustness": [
+    {
+      "words": 25,
+      "accuracy": 0.7848,
+      "f1": 0.7905
+    },
+    {
+      "words": 50,
+      "accuracy": 0.9099,
+      "f1": 0.9002
+    },
+    {
+      "words": 100,
+      "accuracy": 0.9705,
+      "f1": 0.9649
+    },
+    {
+      "words": 150,
+      "accuracy": 0.9857,
+      "f1": 0.9827
+    },
+    {
+      "words": 200,
+      "accuracy": 0.9894,
+      "f1": 0.987
+    },
+    {
+      "words": 300,
+      "accuracy": 0.9914,
+      "f1": 0.9894
+    }
+  ],
+  "external_validation": {
+    "accuracy": 0.5005,
+    "precision": 0.5002501250625313,
+    "recall": 1.0,
+    "f1": 0.6668889629876625,
+    "predicted_as_ai_%": 99.95
+  },
+  "top_ai_words": {
+    "important": 4.712,
+    "additionally": 4.341,
+    "potential": 4.319,
+    "often": 3.766,
+    "it not": 3.668,
+    "important to": 3.622,
+    "education": 3.62,
+    "provide": 3.491,
+    "understanding": 3.235,
+    "however": 3.049,
+    "is important": 2.989,
+    "it like": 2.969,
+    "essential": 2.908,
+    "to": 2.901,
+    "young people": 2.876
+  },
+  "top_human_words": {
+    "because": -9.684,
+    "would": -5.695,
+    "venus": -5.478,
+    "driving": -5.355,
+    "car": -4.667,
+    "people": -4.056,
+    "very": -4.03,
+    "going": -3.752,
+    "dont": -3.742,
+    "get": -3.693,
+    "nasa": -3.673,
+    "that is": -3.573,
+    "percent": -3.539,
+    "the students": -3.521,
+    "do": -3.519
+  }
+}
