@@ -5,7 +5,7 @@ Author: **Seyran Gurbanov**
 
 The web app estimates whether an English essay was written by a **person** or by **AI**. It also explains its decision word by word.
 
-- **Live app:** _link will be added after deployment_
+- **Live app:** https://ai-or-human-seyran.streamlit.app
 - **Analysis notebook:** [`notebooks/AI_or_Human_Analysis.ipynb`](notebooks/AI_or_Human_Analysis.ipynb), which you can open in Google Colab
 
 ## Results (20% hold-out test set, 5,460 essays)
